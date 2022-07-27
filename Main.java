@@ -29,12 +29,14 @@ public class Main {
         System.out.println("Inserisci il giorno di nascita");
         g= sc.nextInt();
         p= new persona(n, c, m, a, g, s, co);
-        System.out.println(p.nom());//STAMPA LETTERE DEL NOME
-        System.out.println(p.cog());//STAMPA LETTERE DEL COGNOME
+        System.out.println(p.cog());//STAMPA LETTERE DEL NOME
+        System.out.println(p.nom());//STAMPA LETTERE DEL COGNOME
         System.out.println(p.anno());
         System.out.println(p.giorno());
-        System.out.println(p.comune());
-        cod = new cf(p.nom(), p.cog(), p.anno(), p.giorno(), p.comune());
+        //System.out.println(p.comune());
+        cod = new cf(p.cog(), p.nom(), p.anno(), p.giorno(), p.comune());
+        cod.controllo_cod();
+        System.out.println(cod.cf);
         sc.close();
     }
 

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -79,7 +78,7 @@ public class persona {
             cognome[numconsonanti] = 'x';
             numconsonanti++;
         }
-        return Arrays.toString(cognome).toUpperCase();
+        return String.valueOf(cognome).toUpperCase();
     }
 
 
@@ -120,19 +119,19 @@ public class persona {
                 cons=false;
             }
         }
-        if(c>1) //VERIFICA SE CI SONO O MENO 4 CONSONANTI
+        if(c>2) //VERIFICA SE CI SONO O MENO 4 CONSONANTI
         {
-            //CE NE SONO SOLO 3 IN TOTALE 2 nell'array di passaggio
-            nome[numconsonanti] = passaggio[0];
-            numconsonanti++;
+            //CE NE SONO SOLO 4 IN TOTALE 3 nell'array di passaggio
             nome[numconsonanti] = passaggio[1];
             numconsonanti++;
+            nome[numconsonanti] = passaggio[2];
+            numconsonanti++;
         }else{
-            if(c>2){
-                //CE NE SONO 4 IN TOTALE 3 nel'array di passaggio
-                nome[numconsonanti] = passaggio[1];
+            if(c>1){
+                //CE NE SONO 3 IN TOTALE 2 nel'array di passaggio
+                nome[numconsonanti] = passaggio[0];
                 numconsonanti++;
-                nome[numconsonanti] = passaggio[2];
+                nome[numconsonanti] = passaggio[1];
                 numconsonanti++;
                 //SE C>2 CI SARRANNO IN TOTALE ALMENO 4 CONSONANTI E QUINDI BISOGNA AGGIUNGERE ALL'ARRAY FINALE SOLAMENTE LA 3 E LA 4 CONSONANTE
             }else{
@@ -167,7 +166,7 @@ public class persona {
             nome[numconsonanti] = 'x';
             numconsonanti++;
         }
-        return Arrays.toString(nome).toUpperCase();
+        return String.valueOf(nome).toUpperCase();
     }
 
     //ANNO E MESE
