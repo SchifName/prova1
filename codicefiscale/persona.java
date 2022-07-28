@@ -83,90 +83,98 @@ public class persona {
 
 
     //CALCOLO LETTERE DEL NOME
-    public String nom(){
-        char[] vocali = new char[] {'a','e','i','o','u','A','E','I','O','U'}; //ARRAY DI VOCALI
-        char [] nom = this.nome.toCharArray(); //ARRAY CON OGNI LETTERA DEL NOME
-        char [] nome = new char[3]; //ARRAY PER IL RISULTATO FINALE
-        char [] passaggio = new char[3]; //ARRAY DI PASSAGGIO CHE MI PERMETTE DI VERIFICARE QUANTE CONSONANTI CI SONO E CONTEMPORANEAMENTE SALVARLE QUI
-        int c = 0; //INDICE DELL'ARRAY DI PASSAGGIO
-        boolean cons=false; //BOOLEANO CHE MI PERMETTE DI CAPIRE SE UNA DETERMINATA LETTERA è UNA CONSONANTE
-        boolean voc=false; //BOOLEANO CHE MI PERMETTE DI CAPIRE SE UNA DETERMINATA LETTERA è UNA VOCALE
-        int numconsonanti = 0; //CONTA LE LETTERE NEL RISULTATO FINALE
-        int length=vocali.length; //LUNGHEZZA DELL'ARRAY DELLE VOCALI
-        for(int i=0; i<this.nome.length(); i++){
-            if(numconsonanti  == 3)break;//SE NE HA GIA' TROVATE 3 ESCE DAL CICLO
-            else{
-                for(int j=0; j < length ; j++){ //CICLO CHE MI PERMETTE DI CONTROLLARE SE UNA LETTERE EQUIVALE AD UNA CONSONANTE
-                    if(nom[i] != vocali[j]){
-                        cons=true;
-                    }else {
-                        cons=false;
-                        break; //SE TROVA CHE EQUIVALE AD UNA VOCALE ESCE
-                    }
-                }
-                if (cons){ //SE cons == TRUE ALLORA LO AGGIUNGE NELL'ARRAY FINALE SE è LA PRIMA CONSONANTE TROVATA
-                    if(numconsonanti==1){ //DALLA SECONDA CONSONANTE TROVATA LI AGGIUNGE NELL'ARRAY DI PASSAGGIO
-                        if(c==3)break; //FINO AD AVERNE 3
-                        else{
-                            passaggio[c] = nom[i];
-                            c++;
-                        }
-                    }else{
-                        nome[numconsonanti] = nom[i]; 
-                        numconsonanti++;
-                    }
-                }
-                cons=false;
+    //edit funzione nome by fra, ottimizzato (forse)
+    public List<Character> nome_cf() {
+
+        // dichiaro lista risultato
+        List<Character> res_nome = new ArrayList<Character>();
+
+        // dichiaro booleano, tentativi e secondo carattere
+        boolean vocale = false;
+        int tentativi = 1;
+        boolean sec_char = true;
+
+        // dichiaro gli array vocali
+        char[] vocali = { 'a', 'e', 'i', 'o', 'u' };
+
+        // scompongo il nome in array char
+        char[] nome_scomposto = new char[this.nome.length()];
+        // copia array in nome_scomposto
+        for (int i = 0; i < this.nome.length(); i++) {
+            nome_scomposto[i] = this.nome.charAt(i);
+        }
+
+        // conto le consonanti per verificare se saltare o meno la seconda consonant
+        // (solo se minore di 4 consonanti)
+        int count_consonanti = 0;
+        for (int i = 0; i < this.nome.length(); i++) {
+            char ch = this.nome.charAt(i);
+            if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u') {
+                System.out.print("");
+            } else if (ch != ' ') {
+                count_consonanti += 1;
             }
         }
-        if(c>2) //VERIFICA SE CI SONO O MENO 4 CONSONANTI
-        {
-            //CE NE SONO SOLO 4 IN TOTALE 3 nell'array di passaggio
-            nome[numconsonanti] = passaggio[1];
-            numconsonanti++;
-            nome[numconsonanti] = passaggio[2];
-            numconsonanti++;
-        }else{
-            if(c>1){
-                //CE NE SONO 3 IN TOTALE 2 nel'array di passaggio
-                nome[numconsonanti] = passaggio[0];
-                numconsonanti++;
-                nome[numconsonanti] = passaggio[1];
-                numconsonanti++;
-                //SE C>2 CI SARRANNO IN TOTALE ALMENO 4 CONSONANTI E QUINDI BISOGNA AGGIUNGERE ALL'ARRAY FINALE SOLAMENTE LA 3 E LA 4 CONSONANTE
-            }else{
-                if(c>0){
-                    nome[numconsonanti] = passaggio[0];
-                    numconsonanti++;
-                }
-            }
+        // in caso di consonanti minori di 4, allora non salterò la seconda consonante
+        if (count_consonanti < 4) {
+            sec_char = false;
         }
-        if(numconsonanti != 3) //SE DOPO TUTTI I CONTROLLI PRECEDENTI NON TROVA ABBASTANZA CONSONANTI SI AGGIUNGONO LE VOCALE
-        {
-            for(int i=0; i<this.nome.length(); i++){
-                if(numconsonanti  == 3)break;
-                else{
-                    for(int j=0; j < length ; j++){
-                        if(nom[i] == vocali[j]){
-                            voc=true;
+
+        // ciclo per la lenght del nome, setto la booleana vocale a false come
+        // semaforo, poi ciclo per quante sono le vocali e setto la booleana, se false
+        // copio in array result
+        while (res_nome.size() < 3) {
+            if (tentativi == 1) {
+                for (int i = 0; i < this.nome.length(); i++) {
+                    // se il res è = 3 allora break
+                    if (res_nome.size() == 3) {
+                        break;
+                    }
+                    vocale = false;
+                    for (int j = 0; j < vocali.length; j++) {
+                        // comparo nome[i] e vocale[j]
+                        if (nome_scomposto[i] == vocali[j]) {
+                            vocale = true;
                             break;
-                        }else {
-                            voc=false;
                         }
                     }
-                    if (voc){
-                        nome[numconsonanti] = nom[i];
-                        numconsonanti++;
+                    // pusho il risultato
+                    if (!vocale) {
+                        if (res_nome.size() == 1 && sec_char == true) {
+                            sec_char = false;
+                            continue;
+                        }
+                        res_nome.add(nome_scomposto[i]);
                     }
-                    voc=false;
+                }
+            } else if (tentativi == 2) {
+                for (int i = 0; i < this.nome.length(); i++) {
+                    // se il res è = 3 allora break
+                    if (res_nome.size() == 3) {
+                        break;
+                    }
+                    vocale = false;
+                    for (int j = 0; j < vocali.length; j++) {
+                        // comparo nome[i] e vocale[j]
+                        if (nome_scomposto[i] == vocali[j]) {
+                            vocale = true;
+                        }
+                    }
+                    // pusho il risultato (stavolta solo se è vocale)
+                    if (vocale) {
+                        res_nome.add(nome_scomposto[i]);
+                    }
+                }
+                // riempio di x fino a 3
+            } else if (tentativi == 3) {
+                while (res_nome.size() < 3) {
+                    res_nome.add('x');
                 }
             }
+            tentativi += 1;
         }
-        if(numconsonanti == 2){ //SE CI SONO MENO DI 3 LETTERE NEL COGNOME SI AGGIUNGE UNA X ALLA FINE
-            nome[numconsonanti] = 'x';
-            numconsonanti++;
-        }
-        return String.valueOf(nome).toUpperCase();
+
+        return res_nome;
     }
 
     //ANNO E MESE
